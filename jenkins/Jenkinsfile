@@ -1,55 +1,24 @@
 pipeline{
     agent any{
-        
-    
+        label "node"
+    }
     stages{
         stage("clean install"){
             steps{
                 withMaven(maven : Maven){
-                    sh 'mvn clean install'
+                sh 'mvn clean install'
                 }
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
-            }
+            
         }
-        stage("image build"){
+        stage("Build docker image"){
             steps{
                 withDocker(docker : Docker){
                     sh 'docker build -t my-app .'
                 }
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                    }
-                }
-            }
+            
         }
     }
-    post{
-        always{
-            echo "========always========"
-        }
-        success{
-            echo "========pipeline executed successfully ========"
-        }
-        failure{
-            echo "========pipeline execution failed========"
-        }
-    }
+    
 }
